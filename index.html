@@ -1,8 +1,7 @@
 <html>
 <head>
-    <meta charset="utf-8">
     <style>
-        body { margin: 0; padding: 0; }
+		body{margin:0;padding:0}
         #setting-button {
             position: fixed;
             top: 10px;
@@ -12,7 +11,7 @@
             background-color: #bbbbccaa;
             border: none;
             font-size: 20px;
-            border-radius: 8px;
+		border-radius:8px;
         }
 
         #setting-div {
@@ -24,82 +23,73 @@
             background-color: #ffffffbb;
             border: 1px solid black;
             display: none;
-            border-radius: 4px;
+		border-radius:4px;
         }
 
         #url-input {
             margin: 10px;
             width: 280px;
-            border-radius: 3px;
-        }
-
-        #refresh-button, #cancel-button, #confirm-button, #back-button, #forward-button {
-            margin: 10px;
-            width: 80px;
-            height: 40px;
-            border: none;
-            border-radius: 8px;
+		border-radius:3px;
         }
 
         #refresh-button {
+            margin: 10px;
+            width: 80px;
+            height: 40px;
             background-color: lightgreen;
+            border: none;
+		border-radius:8px;
         }
 
         #cancel-button {
+            margin: 10px;
+            width: 80px;
+            height: 40px;
             background-color: lightcoral;
+            border: none;
+		border-radius:8px;
         }
 
         #confirm-button {
+            margin: 10px;
+            width: 80px;
+            height: 40px;
             background-color: lightyellow;
-        }
-
-        #back-button {
-            background-color: lightblue;
-        }
-
-        #forward-button {
-            background-color: lightblue;
+            border: none;
+		border-radius:8px;
         }
 
         #iframe {
             width: 100%;
-            height: calc(100% - 300px); /* Adjust height to fit buttons */
+            height: 100%;
             border: none;
         }
-
-        div {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        button {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
+	div {
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	button {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+	}
     </style>
-    <base target="_self">
+	<base target="_self"> 
 </head>
 <body>
     <button id="setting-button" onclick="showSetting()">设置</button>
     <div id="setting-div">
-        <div>请输入完整URL（包含http://或https://，比如：https://www.bilibili.com，建议直接在外部浏览器内复制在此处粘贴）</div>
+    		<div>请输入完整URL（包含http://或https://，比如：https://www.bilibili.com，建议直接在外部浏览器内复制在此处粘贴）</div>
         <input id="url-input" type="text" placeholder="输入URL" value="https://www.bing.com">
         <button id="refresh-button" onclick="refreshIframe()">刷新页面</button>
         <button id="cancel-button" onclick="hideSetting()">退出设置</button>
         <button id="confirm-button" onclick="confirmURL()">保存设置</button>
-        <button id="back-button" onclick="goBack()">后退</button>
-        <button id="forward-button" onclick="goForward()">前进</button>
     </div>
     <iframe id="iframe" src="https://www.bing.com"></iframe>
-
     <script>
-        let historyStack = []; // 用于存储历史记录
-        let currentIndex = -1; // 当前索引
-
         function showSetting() {
             document.getElementById("setting-div").style.display = "block";
         }
@@ -110,47 +100,14 @@
 
         function refreshIframe() {
             var url = document.getElementById("url-input").value;
-            updateIframe(url);
+            document.getElementById("iframe").src = url;
         }
 
         function confirmURL() {
             var url = document.getElementById("url-input").value;
-            updateIframe(url);
+            document.getElementById("iframe").src = url;
             hideSetting();
         }
-
-        function updateIframe(url) {
-            // 更新iframe和历史记录
-            document.getElementById("iframe").src = url;
-            if (currentIndex === -1 || historyStack[currentIndex] !== url) {
-                // 如果是新的URL，更新历史记录
-                historyStack.push(url);
-                currentIndex++;
-            }
-        }
-
-        function goBack() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                document.getElementById("iframe").src = historyStack[currentIndex];
-            }
-        }
-
-        function goForward() {
-            if (currentIndex < historyStack.length - 1) {
-                currentIndex++;
-                document.getElementById("iframe").src = historyStack[currentIndex];
-            }
-        }
-
-        // Prevent default link behavior and load in iframe
-        document.addEventListener('click', function(event) {
-            if (event.target.tagName === 'A') {
-                event.preventDefault();
-                const url = event.target.href;
-                updateIframe(url);
-            }
-        });
 
         window.onload = function() {
             showSetting();
